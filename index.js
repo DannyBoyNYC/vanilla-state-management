@@ -1,22 +1,22 @@
-// Data State
-var data = {
-  listItems: [],
-};
 // UI Template
 var template = function() {
   // If there are no list items
-  if (data.listItems.length < 1)
+  if (template.data.listItems.length < 1)
     return '<p><em>You do not have any list items yet. Try adding one with the form above.</em></p>';
   // If there are
   return (
     '<ul>' +
-    data.listItems
+    template.data.listItems
       .map(function(item) {
         return '<li>' + item + '</li>';
       })
       .join('') +
     '</ul>'
   );
+};
+// Data State
+template.data = {
+  listItems: [],
 };
 // Function to render the UI into the DOM
 var render = function() {
@@ -28,23 +28,17 @@ var render = function() {
 var setData = function(obj) {
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
-      data[key] = obj[key];
+      template.data[key] = obj[key];
     }
   }
   render();
 };
 // Get an immutable copy of the data
 var getData = function() {
-  return JSON.parse(JSON.stringify(data));
+  return JSON.parse(JSON.stringify(template.data));
 };
 // Render the UI
 render();
-// Set default values
-setData({ listItems: ['Dumbledore', 'Hermione', 'Gandalf', 'Neville'] });
-// Try to copy and push a new item
-var items = getData();
-items.listItems.push('Harry Potter');
-console.log(data.listItems);
 // Listen for form submissions
 document.addEventListener(
   'submit',
