@@ -19,10 +19,8 @@ var lists = new Component('#list', {
     );
   }
 });
-
 // Render the initial UI
 lists.render();
-
 // Listen for form submissions
 document.addEventListener(
   'submit',
