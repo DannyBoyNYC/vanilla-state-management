@@ -1,8 +1,7 @@
 // Data State
 var data = {
-  listItems: [],
+  listItems: ['<img src="#" onerror="alert(\'XSS!\')">'],
 };
-
 // UI Template
 var template = function() {
   // If there are no list items
@@ -11,25 +10,24 @@ var template = function() {
   // If there are
   return (
     '<ul>' +
-    data.listItems
-      .map(function(item) {
-        return '<li>' + item + '</li>';
-      })
-      .join('') +
+    DOMPurify.sanitize(
+      data.listItems
+        .map(function(item) {
+          return '<li>' + item + '</li>';
+        })
+        .join(''),
+    ) +
     '</ul>'
   );
 };
-
 // Function to render the UI into the DOM
 var render = function() {
   var list = document.querySelector('#list');
   if (!list) return;
   list.innerHTML = template();
 };
-
 // Render the UI
 render();
-
 // Listen for form submissions
 document.addEventListener(
   'submit',
