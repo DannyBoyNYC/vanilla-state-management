@@ -2,6 +2,7 @@
 var data = {
   listItems: ['<img src="#" onerror="alert(\'XSS!\')">'],
 };
+
 // UI Template
 var template = function() {
   // If there are no list items
@@ -20,12 +21,14 @@ var template = function() {
     '</ul>'
   );
 };
+
 // Function to render the UI into the DOM
 var render = function() {
   var list = document.querySelector('#list');
   if (!list) return;
   list.innerHTML = template();
 };
+
 // Render the UI
 render();
 // Listen for form submissions
