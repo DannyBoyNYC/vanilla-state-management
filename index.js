@@ -2,7 +2,6 @@
 var data = {
   listItems: [],
 };
-
 // UI Template
 var template = function() {
   // If there are no list items
@@ -19,14 +18,12 @@ var template = function() {
     '</ul>'
   );
 };
-
 // Function to render the UI into the DOM
 var render = function() {
   var list = document.querySelector('#list');
   if (!list) return;
   list.innerHTML = template();
 };
-
 // Reactively update data
 var setData = function(obj) {
   for (var key in obj) {
@@ -36,13 +33,18 @@ var setData = function(obj) {
   }
   render();
 };
-
+// Get an immutable copy of the data
+var getData = function() {
+  return JSON.parse(JSON.stringify(data));
+};
 // Render the UI
 render();
-
 // Set default values
 setData({ listItems: ['Dumbledore', 'Hermione', 'Gandalf', 'Neville'] });
-
+// Try to copy and push a new item
+var items = getData();
+items.listItems.push('Harry Potter');
+console.log(data.listItems);
 // Listen for form submissions
 document.addEventListener(
   'submit',
@@ -54,9 +56,10 @@ document.addEventListener(
     // Get the list item
     var item = event.target.querySelector('#list-item');
     if (!item || item.length < 1) return;
-    // Update the data and UI
-    data.listItems.push(item.value);
-    render();
+    // Reactively update the data
+    var items = getData();
+    items.listItems.push(item.value);
+    setData({ listItems: items.listItems });
     // Clear the field and return to focus
     item.value = '';
     item.focus();
