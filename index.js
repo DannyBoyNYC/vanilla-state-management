@@ -20,26 +20,18 @@ document.addEventListener(
     item.value = '';
     item.focus();
   },
-  false
+  false,
 );
-
-var data = {
-  listItems: []
-};
-
-// Attacks
-// var div = document.querySelector('#app');
-// div.innerHTML = '<img src=x onerror="alert(\'XSS Attack\')">';
 
 var template = function() {
   // If there are no list items
-  if (data.listItems.length < 1)
+  if (template.data.listItems.length < 1)
     return '<p><em>You do not have any list items yet. Try adding one with the form above.</em></p>';
 
   // If there are
   return (
     '<ul>' +
-    data.listItems
+    template.data.listItems
       .map(function(item) {
         return '<li>' + item + '</li>';
       })
@@ -49,13 +41,14 @@ var template = function() {
 };
 
 var getData = function() {
-  return JSON.parse(JSON.stringify(data));
+  return JSON.parse(JSON.stringify(template.data));
 };
 
+// Reactively update data
 var setData = function(obj) {
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
-      data[key] = obj[key];
+      template.data[key] = obj[key];
     }
   }
   render();
@@ -67,6 +60,17 @@ var render = function() {
   list.innerHTML = template();
 };
 
-// setData({listItems: ['Dumbledore', 'Hermione', 'Gandalf', 'Neville']});
+setData({ listItems: ['Dumbledore', 'Hermione', 'Gandalf', 'Neville'] });
 
 render();
+
+template.data = {
+  listItems: [],
+};
+
+// // new var, new state
+// var items = getData();
+// console.log(items);
+// items.listItems.push(item.value);
+// // console.log(items);
+// setData({ listItems: items.listItems });
