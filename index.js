@@ -1,6 +1,6 @@
 // Data State
 var data = {
-  listItems: ['<img src="#" onerror="alert(\'XSS!\')">'],
+  listItems: [],
 };
 
 // UI Template
@@ -11,13 +11,11 @@ var template = function() {
   // If there are
   return (
     '<ul>' +
-    DOMPurify.sanitize(
-      data.listItems
-        .map(function(item) {
-          return '<li>' + item + '</li>';
-        })
-        .join(''),
-    ) +
+    data.listItems
+      .map(function(item) {
+        return '<li>' + item + '</li>';
+      })
+      .join('') +
     '</ul>'
   );
 };
@@ -29,8 +27,22 @@ var render = function() {
   list.innerHTML = template();
 };
 
+// Reactively update data
+var setData = function(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      data[key] = obj[key];
+    }
+  }
+  render();
+};
+
 // Render the UI
 render();
+
+// Set default values
+setData({ listItems: ['Dumbledore', 'Hermione', 'Gandalf', 'Neville'] });
+
 // Listen for form submissions
 document.addEventListener(
   'submit',
