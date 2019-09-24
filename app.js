@@ -1,10 +1,24 @@
+var getParams = function(url) {
+  var params = {};
+  var parser = document.createElement('a');
+  parser.href = url || window.location.href;
+  var query = parser.search.substring(1);
+  var vars = query.split('&');
+  if (vars.length < 1) return params;
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
+    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+  }
+  return params;
+};
+
 // Create a new list component
-var lists = new Component('[data-app="lists"]', {
+var lists = new Component('#app', {
   data: {
     listItems: []
   },
   template: function(props) {
-    var baseHTML = `<p><a href="settings.html">Settings &rarr;</a></p>
+    var baseHTML = `<p><a href="?page=settings">Settings &rarr;</a></p>
       <h1>List Maker</h1>
       <form id="add-to-list">
       <label for="list-item">What do you want to add to your list?</label>
@@ -29,7 +43,7 @@ var lists = new Component('[data-app="lists"]', {
 });
 
 // Create a settings component
-var settings = new Component('[data-app="settings"]', {
+var settings = new Component('#app', {
   template: function() {
     var html = `<p><a href="index.html">&larr; Back to Lists</a></p>
       <h1>Settings</h1>
@@ -60,20 +74,13 @@ var submitHandler = function(event) {
   item.focus();
 };
 
-// Get the app container
-var app = document.querySelector('[data-app]');
-
 // Determine the view/UI
-var page = app.getAttribute('data-app');
-
-if (page === 'lists') {
+var page = getParams();
+if (page['page'] === 'settings') {
+  settings.render();
+} else {
   // Render the initial UI
   lists.render();
-
   // Listen for form submissions
   document.addEventListener('submit', submitHandler, false);
-}
-
-if (page === 'settings') {
-  settings.render();
 }
