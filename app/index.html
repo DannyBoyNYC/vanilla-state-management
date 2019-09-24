@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <title>Who's Driving?</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
+    <h1>Who's Driving?</h1>
+
     <div id="app"></div>
+
+    <form id="add-driver">
+      <label for="driver-name"
+        >Add a name to the list of possible drivers</label
+      >
+      <input type="text" id="driver-name" />
+      <button>Add a Driver</button>
+    </form>
+
+    <p>
+      <button id="pick-driver">Pick a Driver</button>
+      <button id="clear-drivers">Remove All Drivers</button>
+    </p>
 
     <script src="component-class.js"></script>
     <script src="app.js"></script>
